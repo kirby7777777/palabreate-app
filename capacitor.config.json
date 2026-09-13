@@ -1,0 +1,8 @@
+{
+  "appId": "com.palabreate.app",
+  "appName": "Palabréate",
+  "webDir": "www",
+  "server": {
+    "androidScheme": "https"
+  }
+}

@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Palabréate</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-glow: #090b11;
+            --surface: rgba(20, 24, 40, 0.85);
+            --surface-border: rgba(255, 255, 255, 0.08);
+            --primary: #00f2fe;
+            --accent: #ff007f;
+            --text-main: #ffffff;
+            --text-sub: #94a3b8;
+            --correct: #10b981;
+            --present: #f59e0b;
+            --absent: #1e293b;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', system-ui, sans-serif; user-select: none; -webkit-tap-highlight-color: transparent; }
+        body { background: radial-gradient(circle at top, #1e1b4b 0%, var(--bg-glow) 80%); color: var(--text-main); display: flex; flex-direction: column; align-items: center; min-height: 100vh; padding: 10px; overflow-x: hidden; }
+
+        .welcome-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(9, 11, 17, 0.96); backdrop-filter: blur(16px); z-index: 200; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 24px; text-align: center; }
+        .welcome-card { background: var(--surface); border: 1px solid var(--surface-border); padding: 24px; border-radius: 24px; max-width: 380px; width: 100%; box-shadow: 0 20px 50px rgba(0,0,0,0.6); }
+        .welcome-title { font-size: 2rem; font-weight: 900; background: linear-gradient(135deg, #00f2fe 0%, #ff007f 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px; }
+        .welcome-step { text-align: left; margin: 12px 0; font-size: 0.85rem; color: var(--text-sub); line-height: 1.4; }
+        .welcome-step strong { color: var(--text-main); display: block; margin-bottom: 2px; }
+        .btn-main { background: linear-gradient(135deg, var(--primary) 0%, #4facfe 100%); color: #000; border: none; width: 100%; padding: 14px; font-weight: 800; font-size: 1rem; border-radius: 12px; cursor: pointer; margin-top: 10px; }
+
+        header { text-align: center; margin: 6px 0; width: 100%; max-width: 400px; }
+        .logo { font-size: 2rem; font-weight: 900; letter-spacing: -1px; background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-transform: uppercase; }
+
+        .hud { display: flex; justify-content: space-between; align-items: center; background: var(--surface); border: 1px solid var(--surface-border); border-radius: 16px; padding: 8px 14px; width: 100%; max-width: 400px; margin-bottom: 10px; }
+        .hud-item { display: flex; flex-direction: column; }
+        .hud-label { font-size: 0.6rem; color: var(--text-sub); font-weight: 800; text-transform: uppercase; }
+        .hud-value { font-size: 1.2rem; font-weight: 900; color: var(--primary); }
+
+        .shop-container { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; width: 100%; max-width: 400px; margin-bottom: 10px; }
+        .shop-btn { background: var(--surface); border: 1px solid var(--surface-border); color: var(--text-main); padding: 8px; border-radius: 12px; font-size: 0.7rem; font-weight: 700; cursor: pointer; display: flex; flex-direction: column; align-items: center; }
+        .shop-btn span.cost { color: var(--primary); font-size: 0.65rem; font-weight: 800; margin-top: 2px; }
+
+        .board { display: grid; grid-template-rows: repeat(6, 1fr); gap: 5px; margin-bottom: 10px; width: 100%; max-width: 300px; height: 330px; }
+        .row { display: grid; grid-template-columns: repeat(5, 1fr); gap: 5px; }
+        .cell { background: rgba(15, 23, 42, 0.6); border: 2px solid rgba(255, 255, 255, 0.08); border-radius: 8px; display: flex; justify-content: center; align-items: center; font-size: 1.5rem; font-weight: 900; text-transform: uppercase; }
+        .cell.correct { background: var(--correct); border-color: var(--correct); }
+        .cell.present { background: var(--present); border-color: var(--present); }
+        .cell.absent { background: var(--absent); border-color: transparent; color: var(--text-sub); }
+
+        .keyboard { display: flex; flex-direction: column; gap: 5px; width: 100%; max-width: 400px; }
+        .kbd-row { display: flex; justify-content: center; gap: 4px; }
+        .key { background: var(--surface); border: 1px solid var(--surface-border); color: var(--text-main); font-size: 0.8rem; font-weight: 800; padding: 12px 0; border-radius: 6px; cursor: pointer; flex: 1; max-width: 36px; display: flex; justify-content: center; align-items: center; }
+        .key.large { max-width: 55px; font-size: 0.65rem; }
+    </style>
+</head>
+<body>
+
+    <div class="welcome-screen" id="welcome-screen">
+        <div class="welcome-card">
+            <div class="welcome-title">PALABRÉATE</div>
+            <p style="font-size: 0.8rem; color: var(--text-sub); margin-bottom: 12px;">Desafío táctico diario</p>
+            
+            <div class="welcome-step">
+                <strong>🎯 El Objetivo</strong>
+                Adivina la palabra oculta de 5 letras en 6 intentos. Las casillas cambiarán de color según tu precisión.
+            </div>
+
+            <div class="welcome-step">
+                <strong>💡 Pistas y Créditos</strong>
+                Empiezas con 100 créditos para usar en ayudas tácticas cuando te quedes atascado.
+            </div>
+
+            <button class="btn-main" onclick="closeWelcome()">¡ENTENDIDO, JUGAR!</button>
+        </div>
+    </div>
+
+    <header>
+        <div class="logo">PALABRÉATE</div>
+    </header>
+
+    <div class="hud">
+        <div class="hud-item">
+            <span class="hud-label">Créditos</span>
+            <span class="hud-value" id="credits">100</span>
+        </div>
+        <div class="hud-item">
+            <span class="hud-label">Racha</span>
+            <span class="hud-value" id="streak" style="color:#fff;">0 🔥</span>
+        </div>
+    </div>
+
+    <div class="shop-container">
+        <button class="shop-btn" onclick="buyFilter()">
+            <span>Descarte (-5 letras)</span>
+            <span class="cost">-20 Créditos</span>
+        </button>
+        <button class="shop-btn" onclick="buyRadar()">
+            <span>Radar de Letra</span>
+            <span class="cost">-35 Créditos</span>
+        </button>
+    </div>
+
+    <div class="board" id="board"></div>
+    <div class="keyboard" id="keyboard"></div>
+
+    <script>
+        const DICTIONARY = ["PLAZA","AUDIO","CARTA","JUEGO","LIBRO","FLOR","TEXTO","BARCO","MUNDO","SUEÑO","CLAVE","RITMO"];
+        let secretWord = "", currentAttempt = 0, currentTile = 0, credits = 100;
+        let boardState = Array(6).fill("").map(() => Array(5).fill(""));
+
+        function initGame() {
+            if (localStorage.getItem('palabreate_welcomed')) {
+                document.getElementById('welcome-screen').style.display = 'none';
+            }
+            secretWord = DICTIONARY[Math.floor(Math.random() * DICTIONARY.length)];
+            renderBoard();
+            renderKeyboard();
+        }
+
+        function closeWelcome() {
+            localStorage.setItem('palabreate_welcomed', 'true');
+            document.getElementById('welcome-screen').style.display = 'none';
+        }
+
+        function renderBoard() {
+            const board = document.getElementById("board");
+            board.innerHTML = "";
+            for (let r = 0; r < 6; r++) {
+                const row = document.createElement("div");
+                row.className = "row";
+                for (let c = 0; c < 5; c++) {
+                    const cell = document.createElement("div");
+                    cell.className = "cell";
+                    cell.id = `cell-${r}-${c}`;
+                    row.appendChild(cell);
+                }
+                board.appendChild(row);
+            }
+        }
+
+        function renderKeyboard() {
+            const keyboard = document.getElementById("keyboard");
+            keyboard.innerHTML = "";
+            const rows = [
+                ["Q","W","E","R","T","Y","U","I","O","P"],
+                ["A","S","D","F","G","H","J","K","L","Ñ"],
+                ["ENTER","Z","X","C","V","B","N","M","DEL"]
+            ];
+            rows.forEach(r => {
+                const kbdRow = document.createElement("div");
+                kbdRow.className = "kbd-row";
+                r.forEach(key => {
+                    const btn = document.createElement("button");
+                    btn.className = "key";
+                    btn.textContent = key;
+                    if (key === "ENTER" || key === "DEL") btn.classList.add("large");
+                    btn.onclick = () => handleKeyPress(key);
+                    kbdRow.appendChild(btn);
+                });
+                keyboard.appendChild(kbdRow);
+            });
+        }
+
+        function handleKeyPress(key) {
+            if (key === "DEL") {
+                if (currentTile > 0) {
+                    currentTile--;
+                    boardState[currentAttempt][currentTile] = "";
+                    document.getElementById(`cell-${currentAttempt}-${currentTile}`).textContent = "";
+                }
+            } else if (key === "ENTER") {
+                if (currentTile === 5) submitAttempt();
+            } else if (/^[A-ZÑ]$/.test(key) && currentTile < 5) {
+                boardState[currentAttempt][currentTile] = key;
+                document.getElementById(`cell-${currentAttempt}-${currentTile}`).textContent = key;
+                currentTile++;
+            }
+        }
+
+        function submitAttempt() {
+            const guess = boardState[currentAttempt].join("");
+            const rowCells = document.querySelectorAll(`#board .row:nth-child(${currentAttempt + 1}) .cell`);
+            
+            for (let i = 0; i < 5; i++) {
+                if (guess[i] === secretWord[i]) rowCells[i].classList.add("correct");
+                else if (secretWord.includes(guess[i])) rowCells[i].classList.add("present");
+                else rowCells[i].classList.add("absent");
+            }
+
+            if (guess === secretWord) alert("¡Enhorabuena! Has resuelto el reto.");
+            else { currentAttempt++; currentTile = 0; }
+        }
+
+        function buyFilter() {
+            if (credits >= 20) { credits -= 20; document.getElementById("credits").textContent = credits; }
+        }
+
+        function buyRadar() {
+            if (credits >= 35) { credits -= 35; document.getElementById("credits").textContent = credits; }
+        }
+
+        initGame();
+    </script>
+</body>
+</html>
