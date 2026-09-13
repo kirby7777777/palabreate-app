@@ -1,0 +1,44 @@
+name: Compilar APK Nativo
+
+on:
+  push:
+    branches:
+      - main
+      - master
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Descargar Código
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Configurar Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: Instalar Dependencias y Capacitor
+        run: |
+          npm install
+          npx cap add android || true
+          npx cap sync android
+
+      - name: Compilar APK
+        run: |
+          cd android
+          chmod +x gradlew
+          ./gradlew assembleDebug
+
+      - name: Guardar APK Descargable
+        uses: actions/upload-artifact@v4
+        with:
+          name: Palabreate-APK
+          path: android/app/build/outputs/apk/debug/app-debug.apk
