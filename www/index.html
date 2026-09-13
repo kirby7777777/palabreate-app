@@ -9,56 +9,57 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-glow: #090b11;
-            --surface: rgba(20, 24, 40, 0.85);
-            --surface-border: rgba(255, 255, 255, 0.08);
+            --bg-glow: #1e293b;
+            --surface: rgba(30, 41, 59, 0.85);
+            --surface-border: rgba(255, 255, 255, 0.15);
             --primary: #00f2fe;
             --accent: #ff007f;
             --text-main: #ffffff;
-            --text-sub: #94a3b8;
+            --text-sub: #cbd5e1;
             --correct: #10b981;
             --present: #f59e0b;
-            --absent: #1e293b;
+            --absent: #334155;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', system-ui, sans-serif; user-select: none; -webkit-tap-highlight-color: transparent; }
-        body { background: radial-gradient(circle at top, #1e1b4b 0%, var(--bg-glow) 80%); color: var(--text-main); display: flex; flex-direction: column; align-items: center; justify-content: space-between; min-height: 100vh; padding: 8px 12px; overflow: hidden; }
+        body { background: radial-gradient(circle at top, #312e81 0%, #0f172a 100%); color: var(--text-main); display: flex; flex-direction: column; align-items: center; justify-content: space-between; min-height: 100vh; padding: 4px 8px; overflow: hidden; }
 
-        .modal-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(9, 11, 17, 0.96); backdrop-filter: blur(16px); z-index: 200; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; text-align: center; }
-        .modal-card { background: var(--surface); border: 1px solid var(--surface-border); padding: 20px; border-radius: 20px; max-width: 380px; width: 100%; box-shadow: 0 20px 50px rgba(0,0,0,0.6); max-height: 90vh; overflow-y: auto; }
-        .modal-title { font-size: 1.8rem; font-weight: 900; background: linear-gradient(135deg, #00f2fe 0%, #ff007f 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 6px; }
+        .modal-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(12px); z-index: 200; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 16px; text-align: center; }
+        .modal-card { background: var(--surface); border: 1px solid var(--surface-border); padding: 18px; border-radius: 18px; max-width: 380px; width: 100%; box-shadow: 0 20px 40px rgba(0,0,0,0.4); max-height: 90vh; overflow-y: auto; }
+        .modal-title { font-size: 1.8rem; font-weight: 900; background: linear-gradient(135deg, #00f2fe 0%, #ff007f 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 4px; }
         
-        .input-user { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid var(--surface-border); background: rgba(0,0,0,0.4); color: #fff; font-size: 1rem; margin: 12px 0; text-align: center; font-weight: 700; }
-        .btn-main { background: linear-gradient(135deg, var(--primary) 0%, #4facfe 100%); color: #000; border: none; width: 100%; padding: 12px; font-weight: 800; font-size: 0.95rem; border-radius: 12px; cursor: pointer; margin-top: 6px; }
+        .input-user { width: 100%; padding: 10px; border-radius: 10px; border: 1px solid var(--surface-border); background: rgba(0,0,0,0.3); color: #fff; font-size: 1rem; margin: 10px 0; text-align: center; font-weight: 700; }
+        .btn-main { background: linear-gradient(135deg, var(--primary) 0%, #4facfe 100%); color: #000; border: none; width: 100%; padding: 10px; font-weight: 800; font-size: 0.9rem; border-radius: 10px; cursor: pointer; margin-top: 4px; }
 
-        header { text-align: center; margin: 2px 0; width: 100%; max-width: 400px; display: flex; justify-content: space-between; align-items: center; }
-        .logo { font-size: 1.5rem; font-weight: 900; background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-transform: uppercase; }
+        header { text-align: center; margin: 0; width: 100%; max-width: 380px; display: flex; justify-content: space-between; align-items: center; padding: 2px 0; }
+        .logo { font-size: 1.4rem; font-weight: 900; background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-transform: uppercase; }
 
-        .hud { display: flex; justify-content: space-between; align-items: center; background: var(--surface); border: 1px solid var(--surface-border); border-radius: 12px; padding: 6px 12px; width: 100%; max-width: 360px; margin-bottom: 4px; }
-        .hud-item { display: flex; flex-direction: column; }
+        .hud { display: flex; justify-content: space-between; align-items: center; background: var(--surface); border: 1px solid var(--surface-border); border-radius: 10px; padding: 4px 10px; width: 100%; max-width: 360px; margin-bottom: 3px; }
+        .hud-item { display: flex; flex-direction: flex-row; align-items: center; gap: 6px; }
         .hud-label { font-size: 0.55rem; color: var(--text-sub); font-weight: 800; text-transform: uppercase; }
-        .hud-value { font-size: 1.1rem; font-weight: 900; color: var(--primary); }
+        .hud-value { font-size: 0.95rem; font-weight: 900; color: var(--primary); }
 
-        .shop-container { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; width: 100%; max-width: 360px; margin-bottom: 6px; }
-        .shop-btn { background: var(--surface); border: 1px solid var(--surface-border); color: var(--text-main); padding: 6px; border-radius: 10px; font-size: 0.65rem; font-weight: 700; cursor: pointer; display: flex; flex-direction: column; align-items: center; }
-        .shop-btn span.cost { color: var(--primary); font-size: 0.6rem; font-weight: 800; margin-top: 1px; }
+        .shop-container { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; width: 100%; max-width: 360px; margin-bottom: 3px; }
+        .shop-btn { background: var(--surface); border: 1px solid var(--surface-border); color: var(--text-main); padding: 4px; border-radius: 8px; font-size: 0.65rem; font-weight: 700; cursor: pointer; display: flex; justify-content: space-around; align-items: center; }
+        .shop-btn span.cost { color: var(--primary); font-size: 0.6rem; font-weight: 800; }
 
-        .board { display: grid; grid-template-rows: repeat(6, 1fr); gap: 4px; width: 100%; max-width: 280px; height: 270px; margin: 0 auto 4px auto; }
+        .board { display: grid; grid-template-rows: repeat(6, 1fr); gap: 4px; width: 100%; max-width: 270px; height: 260px; margin: 0 auto 2px auto; }
         .row { display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; }
-        .cell { background: rgba(15, 23, 42, 0.6); border: 2px solid rgba(255, 255, 255, 0.08); border-radius: 6px; display: flex; justify-content: center; align-items: center; font-size: 1.3rem; font-weight: 900; text-transform: uppercase; }
+        .cell { background: rgba(15, 23, 42, 0.4); border: 2px solid rgba(255, 255, 255, 0.12); border-radius: 6px; display: flex; justify-content: center; align-items: center; font-size: 1.3rem; font-weight: 900; text-transform: uppercase; }
         .cell.correct { background: var(--correct); border-color: var(--correct); }
         .cell.present { background: var(--present); border-color: var(--present); }
         .cell.absent { background: var(--absent); border-color: transparent; color: var(--text-sub); }
 
-        .keyboard { display: flex; flex-direction: column; gap: 4px; width: 100%; max-width: 360px; margin-bottom: 4px; }
-        .kbd-row { display: flex; justify-content: center; gap: 3px; }
-        .key { background: var(--surface); border: 1px solid var(--surface-border); color: var(--text-main); font-size: 0.75rem; font-weight: 800; height: 36px; border-radius: 5px; cursor: pointer; flex: 1; max-width: 32px; display: flex; justify-content: center; align-items: center; padding: 0; }
-        .key.large { max-width: 48px; font-size: 0.6rem; }
-        .key.disabled { opacity: 0.25; pointer-events: none; background: #000; }
+        /* Teclado ampliado y optimizado */
+        .keyboard { display: flex; flex-direction: column; gap: 4px; width: 100%; max-width: 370px; margin-bottom: 6px; }
+        .kbd-row { display: flex; justify-content: center; gap: 4px; }
+        .key { background: var(--surface); border: 1px solid var(--surface-border); color: var(--text-main); font-size: 0.85rem; font-weight: 800; height: 44px; border-radius: 6px; cursor: pointer; flex: 1; max-width: 34px; display: flex; justify-content: center; align-items: center; padding: 0; }
+        .key.large { max-width: 52px; font-size: 0.65rem; }
+        .key.disabled { opacity: 0.2; pointer-events: none; background: #000; }
 
-        /* Clasificación */
-        .leaderboard-list { text-align: left; margin: 10px 0; max-height: 200px; overflow-y: auto; }
-        .leader-item { display: flex; justify-content: space-between; padding: 6px 10px; border-bottom: 1px solid var(--surface-border); font-size: 0.8rem; }
+        .next-timer { font-size: 0.75rem; color: var(--primary); font-weight: 800; margin-top: 4px; display: block; }
+        .leaderboard-list { text-align: left; margin: 8px 0; max-height: 200px; overflow-y: auto; }
+        .leader-item { display: flex; justify-content: space-between; padding: 6px 8px; border-bottom: 1px solid var(--surface-border); font-size: 0.8rem; }
     </style>
 </head>
 <body>
@@ -78,39 +79,39 @@
         <div class="modal-card">
             <div class="modal-title">CLASIFICACIÓN</div>
             <p style="font-size: 0.75rem; color: var(--text-sub);">Resultados de hoy</p>
-            <div class="leaderboard-list" id="leaderboard-content">
-                <!-- Se puebla dinámicamente -->
-            </div>
+            <div class="leaderboard-list" id="leaderboard-content"></div>
             <button class="btn-main" onclick="closeLeaderboard()">VOLVER AL JUEGO</button>
         </div>
     </div>
 
     <header>
         <div class="logo">PALABRÉATE</div>
-        <button onclick="openLeaderboard()" style="background:var(--surface); border:1px solid var(--surface-border); color:#fff; padding:4px 8px; border-radius:8px; font-size:0.7rem; cursor:pointer;">🏆 Ranking</button>
+        <button onclick="openLeaderboard()" style="background:var(--surface); border:1px solid var(--surface-border); color:#fff; padding:4px 10px; border-radius:6px; font-size:0.7rem; font-weight:800; cursor:pointer;">🏆 Ranking</button>
     </header>
 
     <div class="hud">
         <div class="hud-item">
-            <span class="hud-label">Jugador</span>
-            <span class="hud-value" id="user-display" style="font-size: 0.85rem; color:#fff;">-</span>
+            <span class="hud-label">Jugador:</span>
+            <span class="hud-value" id="user-display" style="color:#fff;">-</span>
         </div>
         <div class="hud-item">
-            <span class="hud-label">Créditos</span>
+            <span class="hud-label">Créditos:</span>
             <span class="hud-value" id="credits">100</span>
         </div>
     </div>
 
     <div class="shop-container">
         <button class="shop-btn" id="btn-filter" onclick="buyFilter()">
-            <span>Descarte (-5 letras)</span>
-            <span class="cost">-20 Créditos</span>
+            <span>Descarte (-5)</span>
+            <span class="cost">-20 cr</span>
         </button>
         <button class="shop-btn" id="btn-radar" onclick="buyRadar()">
-            <span>Radar de Letra</span>
-            <span class="cost">-35 Créditos</span>
+            <span>Radar Letra</span>
+            <span class="cost">-35 cr</span>
         </button>
     </div>
+
+    <div id="status-banner" style="text-align: center; font-size: 0.75rem; font-weight: 800; color: var(--primary); display: none;"></div>
 
     <div class="board" id="board"></div>
     <div class="keyboard" id="keyboard"></div>
@@ -119,7 +120,7 @@
         const DICTIONARY = ["PLAZA","AUDIO","CARTA","JUEGO","LIBRO","FLOR","TEXTO","BARCO","MUNDO","SUEÑO","CLAVE","RITMO","SABOR","NUBE","NORTES","FUEGO","PLAYA","VISION","MARTE","ARBOL"];
         let secretWord = "", currentAttempt = 0, currentTile = 0, credits = 100;
         let boardState = Array(6).fill("").map(() => Array(5).fill(""));
-        let todayKey = "", username = "", usedPowerups = false;
+        let todayKey = "", username = "", usedPowerups = false, gameCompleted = false;
 
         function getDailyWord() {
             const now = new Date();
@@ -145,11 +146,18 @@
             secretWord = getDailyWord();
             renderBoard();
             renderKeyboard();
+
+            // Verificar si ya completó el reto de HOY
+            const lastPlayed = localStorage.getItem('palabreate_last_played');
+            if (lastPlayed === todayKey) {
+                gameCompleted = true;
+                lockGameUI();
+            }
         }
 
         function registerUser() {
             const val = document.getElementById('username-input').value.trim();
-            if (val.length < 2) return alert("Introduce un nombre de al menos 2 caracteres.");
+            if (val.length < 2) return alert("Introduce un nombre válido.");
             username = val;
             localStorage.setItem('palabreate_username', username);
             document.getElementById('user-modal').style.display = 'none';
@@ -197,7 +205,7 @@
         }
 
         function handleKeyPress(key) {
-            if (currentAttempt >= 6) return;
+            if (gameCompleted || currentAttempt >= 6) return;
             if (key === "DEL") {
                 if (currentTile > 0) {
                     currentTile--;
@@ -214,6 +222,8 @@
         }
 
         function submitAttempt() {
+            if (gameCompleted) return;
+
             const guess = boardState[currentAttempt].join("");
             const rowCells = document.querySelectorAll(`#board .row:nth-child(${currentAttempt + 1}) .cell`);
             
@@ -224,20 +234,55 @@
             }
 
             if (guess === secretWord) {
-                saveResult(true);
-                setTimeout(() => alert("¡Excelente! Has resuelto el reto de hoy."), 200);
+                finishDailyGame(true);
             } else {
                 currentAttempt++;
                 currentTile = 0;
                 if (currentAttempt >= 6) {
-                    saveResult(false);
-                    setTimeout(() => alert(`Fin del juego. La palabra era: ${secretWord}`), 200);
+                    finishDailyGame(false);
                 }
             }
         }
 
-        /* Funciones de Ayudas Tácticas corregidas */
+        function finishDailyGame(success) {
+            gameCompleted = true;
+            localStorage.setItem('palabreate_last_played', todayKey);
+            saveResult(success);
+            lockGameUI();
+
+            setTimeout(() => {
+                if (success) alert("¡Enhorabuena! Has completado el reto de hoy.");
+                else alert(`Fin del juego. La palabra era: ${secretWord}`);
+            }, 200);
+        }
+
+        function lockGameUI() {
+            document.getElementById("btn-filter").disabled = true;
+            document.getElementById("btn-radar").disabled = true;
+            document.getElementById("btn-filter").style.opacity = "0.4";
+            document.getElementById("btn-radar").style.opacity = "0.4";
+
+            const keys = document.querySelectorAll(".key");
+            keys.forEach(k => k.classList.add("disabled"));
+
+            const banner = document.getElementById("status-banner");
+            banner.style.display = "block";
+            updateCountdown();
+            setInterval(updateCountdown, 60000);
+        }
+
+        function updateCountdown() {
+            const now = new Date();
+            const tomorrow = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
+            const diff = tomorrow - now;
+            const hours = Math.floor(diff / (1000 * 60 * 60));
+            const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+
+            document.getElementById("status-banner").innerHTML = `✔ Reto completado. Próxima palabra en: <strong>${hours}h ${mins}m</strong>`;
+        }
+
         function buyFilter() {
+            if (gameCompleted) return;
             if (credits < 20) return alert("No tienes suficientes créditos.");
             credits -= 20;
             usedPowerups = true;
@@ -255,10 +300,10 @@
                     }
                 }
             }
-            showShortAd();
         }
 
         function buyRadar() {
+            if (gameCompleted) return;
             if (credits < 35) return alert("No tienes suficientes créditos.");
             credits -= 35;
             usedPowerups = true;
@@ -275,15 +320,12 @@
                     break;
                 }
             }
-            showShortAd();
-        }
-
-        function showShortAd() {
-            console.log("Mostrando anuncio corto de monetización...");
         }
 
         function saveResult(success) {
             let leaderboard = JSON.parse(localStorage.getItem('palabreate_leaderboard') || "[]");
+            // Evitar duplicados del mismo usuario hoy
+            leaderboard = leaderboard.filter(item => item.user !== username);
             leaderboard.push({
                 user: username,
                 success: success,
